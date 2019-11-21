@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "10411721846",
+    "firebase_url": "https://housecleann-be9eb.firebaseio.com",
+    "project_id": "housecleann-be9eb",
+    "storage_bucket": "housecleann-be9eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10411721846:android:be3902b596437e120d8b57",
+        "android_client_info": {
+          "package_name": "com.example.houseclean"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10411721846-shovtvnkpi84pv7gfmc42jkp5h5nsc9i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.houseclean",
+            "certificate_hash": "876ef27315cea47e83f85665878d0d38f86d13a2"
+          }
+        },
+        {
+          "client_id": "10411721846-m4dqp06b0mkl4dn1euh6o1t8q3ta517i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnO4T5d_SVs9CVPPVgAUWypCurScyEWog"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10411721846-m4dqp06b0mkl4dn1euh6o1t8q3ta517i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
