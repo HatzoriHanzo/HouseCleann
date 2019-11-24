@@ -41,7 +41,7 @@ public class ClienteLoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user!=null){
-                    Intent intent = new Intent(ClienteLoginActivity.this,MapActivity.class);
+                    Intent intent = new Intent(ClienteLoginActivity.this,ClienteMapActivity.class);
                     startActivity(intent);
                     finish();
                     return;
@@ -95,6 +95,7 @@ public class ClienteLoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+
 
             }
         });
