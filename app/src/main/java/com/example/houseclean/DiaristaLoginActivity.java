@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class DiaristasLoginActivity extends AppCompatActivity {
+public class DiaristaLoginActivity extends AppCompatActivity {
 
     private Button buttonLogin,buttonRegistration;
     private EditText etxtEmail, etxtPassword;
@@ -41,7 +41,7 @@ public class DiaristasLoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user!=null){
-                    Intent intent = new Intent(DiaristasLoginActivity.this,MapActivity.class);
+                    Intent intent = new Intent(DiaristaLoginActivity.this,MapActivity.class);
                     startActivity(intent);
                     finish();
                     return;
@@ -49,11 +49,6 @@ public class DiaristasLoginActivity extends AppCompatActivity {
 
             }
         };
-
-
-
-
-
         etxtEmail = (EditText) findViewById(R.id.emailDiarista);
         etxtPassword = (EditText) findViewById(R.id.passwordDiarista);
 
@@ -66,11 +61,11 @@ public class DiaristasLoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final String email = etxtEmail.getText().toString();
                 final String password = etxtPassword.getText().toString();
-                nAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(DiaristasLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                nAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(DiaristaLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()){
-                            Toast.makeText(DiaristasLoginActivity.this,"sign up error",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DiaristaLoginActivity.this,"sign up error",Toast.LENGTH_SHORT).show();
                         }
                         else {
                             String user_id = nAuth.getCurrentUser().getUid();
@@ -87,22 +82,17 @@ public class DiaristasLoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final String email = etxtEmail.getText().toString();
                 final String password = etxtPassword.getText().toString();
-                nAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(DiaristasLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                nAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(DiaristaLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()){
-                            Toast.makeText(DiaristasLoginActivity.this,"sign up error",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DiaristaLoginActivity.this,"sign up error",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
             }
         });
-
-
-
-
-
 
     }
 
@@ -116,6 +106,7 @@ public class DiaristasLoginActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         nAuth.removeAuthStateListener(firebaseAuthListener);
+        nAuth.signOut();
     }
 }
 

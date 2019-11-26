@@ -5,27 +5,25 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Camera;
 import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,com.google.android.gms.location.LocationListener  {
 
@@ -73,6 +71,7 @@ public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCa
 
     @Override
     public void onLocationChanged(Location location) {
+        if(getApplicationContext()!=null){
         mLastLocation = location;
 
         LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
@@ -80,9 +79,15 @@ public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCa
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
+        String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("DiaristaDisponivel");
+
+        GeoFire geoFire = new GeoFire(ref);
+        geoFire.removeLocation(user_id);
+        geoFire.setLocation(user_id, new GeoLocation(location.getLatitude(),location.getLongitude()));
+
     }
-
-
+    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -122,15 +127,20 @@ public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCa
                 else{
                     Toast.makeText(getApplicationContext(),"Please Provide the Permission",Toast.LENGTH_LONG).show();
                 }
-
                 break;
-
             }
-
-
         }
 
     }
 
-}
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("DiaristaDisponivel");
 
+        GeoFire geoFire = new GeoFire(ref);
+        geoFire.removeLocation(user_id);
+    }
+}

@@ -19,14 +19,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class ClienteLoginActivity extends AppCompatActivity {
+    public class ClienteLoginActivity extends AppCompatActivity {
     private Button buttonLogin,buttonRegistration;
     private EditText etxtEmail, etxtPassword;
     private FirebaseAuth nAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,25 +38,19 @@ public class ClienteLoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user!=null){
-                    Intent intent = new Intent(ClienteLoginActivity.this,ClienteMapActivity.class);
+                    Intent intent = new Intent(ClienteLoginActivity.this, ClienteMapActivity.class);
                     startActivity(intent);
                     finish();
                     return;
                 }
-
             }
         };
-
-
-
-
 
         etxtEmail = (EditText) findViewById(R.id.emailCliente);
         etxtPassword = (EditText) findViewById(R.id.passwordCliente);
 
         buttonLogin = (Button) findViewById(R.id.loginCliente);
         buttonRegistration = (Button) findViewById(R.id.registrationCliente);
-
 
         buttonRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +67,7 @@ public class ClienteLoginActivity extends AppCompatActivity {
                             String user_id = nAuth.getCurrentUser().getUid();
                             DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Cliente").child(user_id);
                             current_user_db.setValue(true);
+
                         }
                     }
                 });
@@ -100,11 +92,6 @@ public class ClienteLoginActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
     }
 
     @Override
@@ -117,5 +104,6 @@ public class ClienteLoginActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         nAuth.removeAuthStateListener(firebaseAuthListener);
+        nAuth.signOut();
     }
 }

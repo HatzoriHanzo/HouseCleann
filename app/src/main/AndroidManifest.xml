@@ -35,7 +35,7 @@
         <activity
             android:name=".ClienteMapActivity"
             android:label="@string/title_activity_cliente_map"></activity>
-        <activity android:name=".DiaristasLoginActivity" />
+        <activity android:name=".DiaristaLoginActivity" />
         <activity android:name=".MapActivity" />
         <activity android:name=".ClienteLoginActivity" />
         <activity android:name=".MainActivity">

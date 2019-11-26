@@ -3,9 +3,7 @@ package com.example.houseclean;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 
 
@@ -23,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         buttonCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,ClienteLoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, ClienteLoginActivity.class);
                 startActivity(intent);
                 finish();
                 return;
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         buttonDiarista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,DiaristasLoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, DiaristaLoginActivity.class);
                 startActivity(intent);
                 finish();
                 return;
