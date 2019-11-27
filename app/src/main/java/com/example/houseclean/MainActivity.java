@@ -28,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-
-
         });
 
         buttonDiarista.setOnClickListener(new View.OnClickListener() {

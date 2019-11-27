@@ -50,14 +50,14 @@ public class UserCadastro extends AppCompatActivity {
         user = new User();
 
 
-        buttonCadastrar.setOnClickListener(new View.OnClickListener() {
+        buttonChooseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Filechooser();
             }
 
         });
-        buttonChooseImg.setOnClickListener(new View.OnClickListener() {
+        buttonCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (uploadTask != null && uploadTask.isInProgress()) {
@@ -95,6 +95,7 @@ public class UserCadastro extends AppCompatActivity {
                         // Get a URL to the uploaded content
                        // Uri downloadUrl = taskSnapshot.getDownloadUrl();
                         Toast.makeText(UserCadastro.this,"Cadastro Realizado com Sucesso!",Toast.LENGTH_LONG).show();
+                        //setContentView(R.layout.activity_maps);
 
                     }
                 })
