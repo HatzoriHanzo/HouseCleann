@@ -120,6 +120,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("driversAvailable");
+
+                GeoFire geoFire = new GeoFire(ref);
+                geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
 
             }
         }
@@ -195,6 +200,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
 
+        disconnectDriver();
+    }
+
+    private void disconnectDriver(){
+        if (mFusedLocationClient != null){
+            mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+        }
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("driversAvailable");
+
+        GeoFire geoFire = new GeoFire(ref);
+        geoFire.removeLocation(userId);
+    }
 }
 
