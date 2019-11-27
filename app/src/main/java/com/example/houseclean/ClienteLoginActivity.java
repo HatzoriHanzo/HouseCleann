@@ -28,7 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_cliente_login);
 
 
         nAuth = FirebaseAuth.getInstance();
