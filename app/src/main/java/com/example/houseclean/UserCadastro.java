@@ -43,20 +43,8 @@ public class UserCadastro extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cliente_cadastro);
-        nAuth = FirebaseAuth.getInstance();
 
-        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    Intent intent = new Intent(UserCadastro.this, UserCadastro.class);
-                    startActivity(intent);
-                    finish();
-                    return;
-                }
-            }};
-        mStorageRef = FirebaseStorage.getInstance().getReference("Avatar");
+        mStorageRef = FirebaseStorage.getInstance().getReference("UsersAvatars");
         mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Cadastros");
         buttonCadastrar = (Button) findViewById(R.id.cadastrarUser);
         buttonChooseImg = (Button) findViewById(R.id.fotoGaleriaUser);
@@ -71,16 +59,17 @@ public class UserCadastro extends AppCompatActivity {
             public void onClick(View view) {
                 Filechooser();
             }
-
         });
         buttonCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fileuploader();
+                if (uploadTask != null && uploadTask.isInProgress()){
+                    Toast.makeText(UserCadastro.this,"File Being Uplodaded!",Toast.LENGTH_LONG).show();
 
+                }else{
+                    Fileuploader();
+                }
             }
-
-
         });
     }
     private String getExtension(Uri uri){

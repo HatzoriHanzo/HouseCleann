@@ -30,18 +30,13 @@ import com.google.firebase.database.FirebaseDatabase;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cliente_login);
 
-
         nAuth = FirebaseAuth.getInstance();
-
-        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+       firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user!=null){
-                    Intent intent = new Intent(ClienteLoginActivity.this, UserCadastro.class);
-                    startActivity(intent);
-                    finish();
-                    return;
+                    Toast.makeText(ClienteLoginActivity.this,"Welcome!",Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -67,7 +62,10 @@ import com.google.firebase.database.FirebaseDatabase;
                             String user_id = nAuth.getCurrentUser().getUid();
                             DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Cliente").child(user_id);
                             current_user_db.setValue(true);
-
+                            Intent intent = new Intent(ClienteLoginActivity.this, UserCadastro.class);
+                            startActivity(intent);
+                            finish();
+                            return;
                         }
                     }
                 });
@@ -84,14 +82,16 @@ import com.google.firebase.database.FirebaseDatabase;
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()){
                             Toast.makeText(ClienteLoginActivity.this,"sign up error",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Intent intent = new Intent(ClienteLoginActivity.this, MapsActivity.class);
+                            startActivity(intent);
+                            finish();
+                            return;
                         }
                     }
                 });
-
-
             }
         });
-
     }
 
     @Override
