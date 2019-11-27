@@ -41,7 +41,7 @@ public class DiaristaLoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user!=null){
-                    Intent intent = new Intent(DiaristaLoginActivity.this,MapsActivity.class);
+                    Intent intent = new Intent(DiaristaLoginActivity.this, UserCadastro.class);
                     startActivity(intent);
                     finish();
                     return;

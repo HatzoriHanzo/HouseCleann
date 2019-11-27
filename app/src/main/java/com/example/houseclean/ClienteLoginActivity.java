@@ -38,7 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user!=null){
-                    Intent intent = new Intent(ClienteLoginActivity.this, MapsActivity.class);
+                    Intent intent = new Intent(ClienteLoginActivity.this, UserCadastro.class);
                     startActivity(intent);
                     finish();
                     return;
