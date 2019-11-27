@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -26,7 +28,8 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 public class UserCadastro extends AppCompatActivity {
-
+    private FirebaseAuth nAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
     Button buttonCadastrar,buttonChooseImg;
     ImageView img;
     StorageReference mStorageRef;
@@ -40,8 +43,21 @@ public class UserCadastro extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cliente_cadastro);
+        nAuth = FirebaseAuth.getInstance();
+
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    Intent intent = new Intent(UserCadastro.this, UserCadastro.class);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+            }};
         mStorageRef = FirebaseStorage.getInstance().getReference("Avatar");
-        mDbRef = FirebaseDatabase.getInstance().getReference().child("Cadastros");
+        mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Cadastros");
         buttonCadastrar = (Button) findViewById(R.id.cadastrarUser);
         buttonChooseImg = (Button) findViewById(R.id.fotoGaleriaUser);
         img = (ImageView) findViewById(R.id.imagemUser);
@@ -60,12 +76,8 @@ public class UserCadastro extends AppCompatActivity {
         buttonCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (uploadTask != null && uploadTask.isInProgress()) {
-                    Toast.makeText(UserCadastro.this,"Imagem sendo carregada , espere um momento!",Toast.LENGTH_LONG).show();
-                }
-                else{
                 Fileuploader();
-                }
+
             }
 
 
@@ -82,18 +94,20 @@ public class UserCadastro extends AppCompatActivity {
         String imageId;
         imageId = System.currentTimeMillis()+"."+getExtension(imguri);
         user.setNome(userName.getText().toString().trim());
+        user.setImageId(imageId);
         int p = Integer.parseInt(userIdade.getText().toString().trim());
         user.setIdade(p);
-        user.setImageId(imageId);
         mDbRef.push().setValue(user);
 
         StorageReference reference = mStorageRef.child(imageId);
-        uploadTask = reference.putFile(imguri)
+
+        reference.putFile(imguri)
+
+
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
-                       // Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
                         Toast.makeText(UserCadastro.this,"Cadastro Realizado com Sucesso!",Toast.LENGTH_LONG).show();
                         //setContentView(R.layout.activity_maps);
 
@@ -104,6 +118,7 @@ public class UserCadastro extends AppCompatActivity {
                     public void onFailure(@NonNull Exception exception) {
                         // Handle unsuccessful uploads
                         // ...
+                        Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
