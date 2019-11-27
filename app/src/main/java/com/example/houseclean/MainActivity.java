@@ -8,7 +8,7 @@ import android.widget.Button;
 
 
 public class MainActivity extends AppCompatActivity {
-    private Button buttonCliente, buttonDiarista;
+    private Button buttonCliente, buttonDiarista,buttonMapa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonCliente = (Button) findViewById(R.id.buttonCliente);
         buttonDiarista = (Button) findViewById(R.id.buttonDiarista);
+        buttonMapa = (Button) findViewById(R.id.buttonMapa);
 
         buttonCliente.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +36,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, DiaristaLoginActivity.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+
+
+
+        });
+        buttonMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(intent);
                 finish();
                 return;

@@ -28,7 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cliente_login);
+        setContentView(R.layout.activity_maps);
 
 
         nAuth = FirebaseAuth.getInstance();
@@ -38,7 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user!=null){
-                    Intent intent = new Intent(ClienteLoginActivity.this, ClienteMapActivity.class);
+                    Intent intent = new Intent(ClienteLoginActivity.this, MapsActivity.class);
                     startActivity(intent);
                     finish();
                     return;

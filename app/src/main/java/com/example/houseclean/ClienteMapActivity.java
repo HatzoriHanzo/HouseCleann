@@ -35,7 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
+    private String customerId = "", destination;
     Location mLastLocation;
     LocationRequest mLocationRequest;
     private SupportMapFragment mapFragment;
@@ -54,73 +54,90 @@ public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCa
     }
 
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mLocationRequest  = new LocationRequest();
+
+        mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
 
             }else{
                 checkLocationPermission();
             }
         }
     }
-    LocationCallback mLocationCallBack = new LocationCallback() {
+    LocationCallback mLocationCallback = new LocationCallback(){
         @Override
         public void onLocationResult(LocationResult locationResult) {
-            for (Location location : locationResult.getLocations()){
+            for(Location location : locationResult.getLocations()){
                 if(getApplicationContext()!=null){
                     mLastLocation = location;
-
                     LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
-
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
-                    String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("DiaristaDisponivel");
+                    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    DatabaseReference refAvailable = FirebaseDatabase.getInstance().getReference("driversAvailable");
+                    DatabaseReference refWorking = FirebaseDatabase.getInstance().getReference("driversWorking");
+                    GeoFire geoFireAvailable = new GeoFire(refAvailable);
+                    GeoFire geoFireWorking = new GeoFire(refWorking);
 
-                    GeoFire geoFire = new GeoFire(ref);
-                    geoFire.removeLocation(user_id);
-                    geoFire.setLocation(user_id, new GeoLocation(location.getLatitude(),location.getLongitude()));
+                    switch (customerId){
+                        case "":
+                            geoFireWorking.removeLocation(userId);
+                            geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+                            break;
+
+                        default:
+                            geoFireAvailable.removeLocation(userId);
+                            geoFireWorking.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+                            break;
+                    }
                 }
             }
         }
     };
 
+
     private void checkLocationPermission() {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
-                    new AlertDialog.Builder(this).setTitle("give me P E R M I S S I O N  N O  W !").setMessage("i mean it brother").setPositiveButton("Sure ,i'll give it to ya", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            ActivityCompat.requestPermissions(ClienteMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
-                        }
-                    }).create().show();
-                }
-                else{
-                    ActivityCompat.requestPermissions(ClienteMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
-                }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                new AlertDialog.Builder(this)
+                        .setTitle("give permission")
+                        .setMessage("give permission message")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ActivityCompat.requestPermissions(ClienteMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                            }
+                        })
+                        .create()
+                        .show();
             }
+            else{
+                ActivityCompat.requestPermissions(ClienteMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
+        switch(requestCode){
             case 1:{
-                if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
-                        mFusedLocationClient.requestLocationUpdates(mLocationRequest,mLocationCallBack, Looper.myLooper());
+                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
                         mMap.setMyLocationEnabled(true);
                     }
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"Please Provide the Permission",Toast.LENGTH_LONG).show();
+                } else{
+                    Toast.makeText(getApplicationContext(), "Please provide the permission", Toast.LENGTH_LONG).show();
                 }
                 break;
             }
@@ -132,20 +149,19 @@ public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCa
         super.onStop();
 
             disconnectDriver();
-
     }
     private void connectDriver(){
         checkLocationPermission();
-        mFusedLocationClient.requestLocationUpdates(mLocationRequest,mLocationCallBack, Looper.myLooper());
+        mFusedLocationClient.requestLocationUpdates(mLocationRequest,mLocationCallback, Looper.myLooper());
         mMap.setMyLocationEnabled(true);
-    }
 
+    }
     private void disconnectDriver(){
         if (mFusedLocationClient != null){
-            mFusedLocationClient.removeLocationUpdates(mLocationCallBack);
+            mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         }
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("driversAvailable");
+       DatabaseReference ref = FirebaseDatabase.getInstance().getReference("driversAvailable");
 
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
