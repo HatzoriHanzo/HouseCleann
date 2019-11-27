@@ -1,9 +1,5 @@
 package com.example.houseclean;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,13 +9,15 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -27,7 +25,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
-public class UserCadastro extends AppCompatActivity {
+public class DiaristaaCadastro extends AppCompatActivity {
+
+
+
+
     private FirebaseAuth nAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     Button buttonCadastrar,buttonChooseImg;
@@ -44,8 +46,8 @@ public class UserCadastro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cliente_cadastro);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("ClientesAvatars");
-        mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Cliente").child("CadastrosClientes");
+        mStorageRef = FirebaseStorage.getInstance().getReference("DiaristaAvatars");
+        mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Diaristas").child("CadastrosDiaristas");
         buttonCadastrar = (Button) findViewById(R.id.cadastrarUser);
         buttonChooseImg = (Button) findViewById(R.id.fotoGaleriaUser);
         img = (ImageView) findViewById(R.id.imagemUser);
@@ -64,7 +66,7 @@ public class UserCadastro extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (uploadTask != null && uploadTask.isInProgress()){
-                    Toast.makeText(UserCadastro.this,"File Being Uplodaded!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(DiaristaaCadastro.this,"File Being Uplodaded!",Toast.LENGTH_LONG).show();
 
                 }else{
                     Fileuploader();
@@ -97,7 +99,7 @@ public class UserCadastro extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        Toast.makeText(UserCadastro.this,"Cadastro Realizado com Sucesso!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(com.example.houseclean.DiaristaaCadastro.this,"Cadastro Realizado com Sucesso!",Toast.LENGTH_LONG).show();
                         //setContentView(R.layout.activity_maps);
 
                     }
@@ -128,8 +130,10 @@ public class UserCadastro extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData() != null){
-             imguri = data.getData();
-             img.setImageURI(imguri);
+            imguri = data.getData();
+            img.setImageURI(imguri);
         }
     }
 }
+
+

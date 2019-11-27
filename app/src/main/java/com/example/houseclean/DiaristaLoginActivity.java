@@ -41,12 +41,8 @@ public class DiaristaLoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user!=null){
-                    Intent intent = new Intent(DiaristaLoginActivity.this, UserCadastro.class);
-                    startActivity(intent);
-                    finish();
-                    return;
+                    Toast.makeText(DiaristaLoginActivity.this,"Welcome! ",Toast.LENGTH_LONG).show();
                 }
-
             }
         };
         etxtEmail = (EditText) findViewById(R.id.emailDiarista);
@@ -71,6 +67,10 @@ public class DiaristaLoginActivity extends AppCompatActivity {
                             String user_id = nAuth.getCurrentUser().getUid();
                             DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Diaristas").child(user_id);
                             current_user_db.setValue(true);
+                            Intent intent = new Intent(DiaristaLoginActivity.this, DiaristaaCadastro.class);
+                            startActivity(intent);
+                            finish();
+                            return;
                         }
                     }
                 });
@@ -87,6 +87,11 @@ public class DiaristaLoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()){
                             Toast.makeText(DiaristaLoginActivity.this,"sign up error",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Intent intent = new Intent(DiaristaLoginActivity.this, MapsActivity.class);
+                            startActivity(intent);
+                            finish();
+                            return;
                         }
                     }
                 });
