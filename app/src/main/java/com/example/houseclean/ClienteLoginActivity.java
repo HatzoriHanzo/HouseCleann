@@ -36,7 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user!=null){
-                    Toast.makeText(ClienteLoginActivity.this,"Welcome!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(ClienteLoginActivity.this,"Welcome! Tell us a little about yourself.",Toast.LENGTH_LONG).show();
                 }
             }
         };
