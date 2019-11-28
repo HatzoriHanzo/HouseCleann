@@ -26,24 +26,20 @@
         android:hint="Cpf" />
 
 
-
-    <Button
-        android:id="@+id/btnInsert"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Insert"></Button>
     <Button
         android:id="@+id/btnUpdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Update"></Button>
+        android:text="Update"
+        android:onClick="updateData"></Button>
 
 
     <Button
         android:id="@+id/btnRead"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Read"></Button>
+        android:text="Read"
+        android:onClick="readData"></Button>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>
