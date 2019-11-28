@@ -39,7 +39,7 @@ public class DiaristaaCadastro extends AppCompatActivity {
     private StorageTask uploadTask;
     User user;
     DatabaseReference mDbRef;
-    EditText userName,userIdade;
+    EditText userName,userIdade,userCpf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class DiaristaaCadastro extends AppCompatActivity {
         img = (ImageView) findViewById(R.id.imagemUser);
         userName = (EditText) findViewById(R.id.txtnomeUser);
         userIdade = (EditText) findViewById(R.id.txtidadeUser);
+        userCpf = (EditText) findViewById(R.id.txtcpfUser);
         user = new User();
 
 
@@ -88,6 +89,7 @@ public class DiaristaaCadastro extends AppCompatActivity {
         user.setImageId(imageId);
         int p = Integer.parseInt(userIdade.getText().toString().trim());
         user.setIdade(p);
+        user.setCpf(userCpf.getText().toString().trim());
         mDbRef.push().setValue(user);
 
         StorageReference reference = mStorageRef.child(imageId);

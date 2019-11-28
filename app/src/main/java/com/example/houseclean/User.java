@@ -4,9 +4,20 @@ public class User {
     private String nome;
     private Integer idade;
     private String imageId;
+    private String cpf;
+
 
     public User() {
     }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
 
     public String getNome() {
         return nome;

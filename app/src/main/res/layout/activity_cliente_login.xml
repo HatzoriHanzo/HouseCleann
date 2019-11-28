@@ -4,30 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ClienteLoginActivity"
-    android:orientation="vertical">
+    android:background="@mipmap/broom"
+    android:orientation="vertical"
+    tools:context=".ClienteLoginActivity">
 
     <EditText
+        android:id="@+id/emailCliente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="email"
-        android:id="@+id/emailCliente" />
+        android:hint="email" />
+
     <EditText
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="password"
-    android:id="@+id/passwordCliente" />
-    <Button
+        android:id="@+id/passwordCliente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:id="@+id/loginCliente">
-    </Button>
+        android:hint="password" />
+
     <Button
+        android:id="@+id/loginCliente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registration"
-        android:id="@+id/registrationCliente">
+        android:text="Login"></Button>
+
+    <Button
+        android:id="@+id/registrationCliente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Registration">
 
     </Button>
 

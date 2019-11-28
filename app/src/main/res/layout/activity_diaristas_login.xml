@@ -4,30 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ClienteLoginActivity"
-    android:orientation="vertical">
+    android:background="@mipmap/broom"
+    android:orientation="vertical"
+    tools:context=".ClienteLoginActivity">
 
     <EditText
+        android:id="@+id/emailDiarista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="email"
-        android:id="@+id/emailDiarista" />
+        android:hint="email" />
+
     <EditText
+        android:id="@+id/passwordDiarista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="password"
-        android:id="@+id/passwordDiarista" />
+        android:hint="password" />
+
     <Button
+        android:id="@+id/loginDiaristaa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:id="@+id/loginDiaristaa">
-    </Button>
+        android:text="Login"></Button>
+
     <Button
+        android:id="@+id/registrationDiarista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registration"
-        android:id="@+id/registrationDiarista">
+        android:text="Registration">
 
     </Button>
 

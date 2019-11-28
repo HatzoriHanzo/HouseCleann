@@ -4,39 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserCadastro"
-    android:orientation="vertical">
+    android:background="@mipmap/broom"
+    android:orientation="vertical"
+    tools:context=".UserCadastro">
 
     <EditText
+        android:id="@+id/txtnomeUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nome"
-        android:id="@+id/txtnomeUser" />
+        android:hint="Nome" />
+
     <EditText
+        android:id="@+id/txtidadeUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Idade"
-        android:id="@+id/txtidadeUser" />
+        android:hint="Idade" />
+    <EditText
+        android:id="@+id/txtcpfUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Cpf" />
 
     <ImageView
         android:id="@+id/imagemUser"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="16dp" />
+
     <Button
+        android:id="@+id/fotoGaleriaUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Escolher Foto"
-        android:id="@+id/fotoGaleriaUser">
-    </Button>
+        android:text="Escolher Foto"></Button>
 
 
     <Button
+        android:id="@+id/cadastrarUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cadastrar"
-        android:id="@+id/cadastrarUser">
-    </Button>
+        android:text="Cadastrar"></Button>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -9,19 +9,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@mipmap/broom"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/buttonCliente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SOU UM CLIENTE" />
+            android:text="SOU UM CLIENTE"
+            />
 
         <Button
             android:id="@+id/buttonDiarista"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SOU UM(A) DIARISTA" />
+
         <Button
             android:id="@+id/buttonMapa"
             android:layout_width="match_parent"
