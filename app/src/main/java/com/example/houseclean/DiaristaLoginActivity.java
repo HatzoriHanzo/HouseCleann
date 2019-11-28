@@ -41,7 +41,7 @@ public class DiaristaLoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user!=null){
-                    Toast.makeText(DiaristaLoginActivity.this,"Welcome! ",Toast.LENGTH_LONG).show();
+                    Toast.makeText(DiaristaLoginActivity.this,"Welcome",Toast.LENGTH_LONG).show();
                 }
             }
         };
