@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/broom"
+    android:orientation="vertical"
+    tools:context=".PerfilUsuario">
+
+    <EditText
+        android:id="@+id/txtnomeUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nome" />
+
+    <EditText
+        android:id="@+id/txtidadeUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Idade" />
+    <EditText
+        android:id="@+id/txtcpfUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Cpf" />
+
+
+
+    <Button
+        android:id="@+id/btnInsert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Insert"></Button>
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update"></Button>
+
+
+    <Button
+        android:id="@+id/btnRead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Read"></Button>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

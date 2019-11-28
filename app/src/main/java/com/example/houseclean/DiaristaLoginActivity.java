@@ -64,9 +64,6 @@ public class DiaristaLoginActivity extends AppCompatActivity {
                             Toast.makeText(DiaristaLoginActivity.this,"sign up error",Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            String user_id = nAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Diaristas").child(user_id);
-                            current_user_db.setValue(true);
                             Intent intent = new Intent(DiaristaLoginActivity.this, DiaristaaCadastro.class);
                             startActivity(intent);
                             finish();

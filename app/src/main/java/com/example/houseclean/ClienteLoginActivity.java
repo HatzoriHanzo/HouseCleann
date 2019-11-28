@@ -59,9 +59,6 @@ import com.google.firebase.database.FirebaseDatabase;
                             Toast.makeText(ClienteLoginActivity.this,"sign up error",Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            String user_id = nAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Cliente").child(user_id);
-                            current_user_db.setValue(true);
                             Intent intent = new Intent(ClienteLoginActivity.this, UserCadastro.class);
                             startActivity(intent);
                             finish();

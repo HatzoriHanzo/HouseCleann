@@ -86,7 +86,7 @@ public class DiaristaaCadastro extends AppCompatActivity {
         String imageId;
         imageId = System.currentTimeMillis()+"."+getExtension(imguri);
         user.setNome(userName.getText().toString().trim());
-        user.setImageId(imageId);
+         user.setImageId(imageId);
         int p = Integer.parseInt(userIdade.getText().toString().trim());
         user.setIdade(p);
         user.setCpf(userCpf.getText().toString().trim());

@@ -18,6 +18,7 @@
         android:roundIcon="@mipmap/broom"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".PerfilUsuario"></activity>
         <activity android:name=".DiaristaaCadastro" />
         <activity android:name=".UserCadastro" />
         <!--

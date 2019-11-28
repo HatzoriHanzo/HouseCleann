@@ -69,17 +69,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
 
-        perfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MapsActivity.this, ProfileeFragment.class);
-                startActivity(intent);
-                finish();
-                return;
-            }
-        });
 
-    }
+
+        }
+
+
 
     @Override
     public void onPause() {
