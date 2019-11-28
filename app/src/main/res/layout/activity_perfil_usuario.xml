@@ -8,38 +8,50 @@
     android:orientation="vertical"
     tools:context=".PerfilUsuario">
 
+    <ImageView
+        android:id="@+id/imagemUserFirebase"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="16dp" />
     <EditText
         android:id="@+id/txtnomeUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nome" />
 
-    <EditText
-        android:id="@+id/txtidadeUser"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Idade" />
+
     <EditText
         android:id="@+id/txtcpfUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Cpf" />
-
-
-    <Button
-        android:id="@+id/btnUpdate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Update"
-        android:onClick="updateData"></Button>
-
+        android:hint="Email" />
 
     <Button
-        android:id="@+id/btnRead"
+        android:id="@+id/btnReadData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Read"
-        android:onClick="readData"></Button>
+        android:text="Load Profile"
+        android:onClick="readDataFirebase"
+        ></Button>
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="logout"
+        android:onClick="isLoggingOut"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/map"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.081" />
+
+
+
+
+
+
+
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

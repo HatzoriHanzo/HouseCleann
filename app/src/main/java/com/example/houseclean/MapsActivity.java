@@ -50,7 +50,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Location mLastLocation;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
-    Button perfil;
+    Button btnPerfil,btnLogout;
 
 
 
@@ -60,8 +60,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        perfil = (Button) findViewById(R.id.fotoGaleriaUser);
-
+        btnPerfil = (Button) findViewById(R.id.perfilUser);
+        btnLogout = (Button) findViewById(R.id.buttonLogout);
         getSupportActionBar().setTitle("Map Location Activity");
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -69,7 +69,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
 
-        perfil.setOnClickListener(new View.OnClickListener() {
+        btnPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MapsActivity.this, PerfilUsuario.class);
@@ -81,6 +81,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
 
+        public void isLoggingOut(View view){
+        try {
+
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Toast.makeText(MapsActivity.this, "Logging out...", Toast.LENGTH_SHORT).show();
+            FirebaseAuth.getInstance().signOut();
+          Intent intent = new Intent(MapsActivity.this,MainActivity.class);
+          startActivity(intent);
+          finish();
+          return;
+
+        }
 
 
     @Override

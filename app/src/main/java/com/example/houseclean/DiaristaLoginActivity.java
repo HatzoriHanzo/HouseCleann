@@ -61,7 +61,7 @@ public class DiaristaLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()){
-                            Toast.makeText(DiaristaLoginActivity.this,"sign up error",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DiaristaLoginActivity.this,"Make sure your password is 6 digits long!",Toast.LENGTH_SHORT).show();
                         }
                         else {
                             Intent intent = new Intent(DiaristaLoginActivity.this, DiaristaaCadastro.class);
@@ -108,7 +108,7 @@ public class DiaristaLoginActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         nAuth.removeAuthStateListener(firebaseAuthListener);
-        nAuth.signOut();
+
     }
 }
 

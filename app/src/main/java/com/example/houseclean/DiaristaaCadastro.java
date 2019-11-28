@@ -102,7 +102,15 @@ public class DiaristaaCadastro extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                         Toast.makeText(com.example.houseclean.DiaristaaCadastro.this,"Cadastro Realizado com Sucesso!",Toast.LENGTH_LONG).show();
-                        //setContentView(R.layout.activity_maps);
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Intent intent = new Intent(DiaristaaCadastro.this, MapsActivity.class);
+                        startActivity(intent);
+                        finish();
+                        return;
 
                     }
                 })

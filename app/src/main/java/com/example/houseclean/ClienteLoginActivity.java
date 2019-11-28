@@ -36,7 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user!=null){
-                    Toast.makeText(ClienteLoginActivity.this,"Welcome! Tell us a little about yourself.",Toast.LENGTH_LONG).show();
+                    Toast.makeText(ClienteLoginActivity.this,"Welcome!",Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -56,7 +56,7 @@ import com.google.firebase.database.FirebaseDatabase;
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()){
-                            Toast.makeText(ClienteLoginActivity.this,"sign up error",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ClienteLoginActivity.this,"Make sure your password is 6 digits long!",Toast.LENGTH_SHORT).show();
                         }
                         else {
                             Intent intent = new Intent(ClienteLoginActivity.this, UserCadastro.class);
@@ -101,6 +101,6 @@ import com.google.firebase.database.FirebaseDatabase;
     protected void onStop() {
         super.onStop();
         nAuth.removeAuthStateListener(firebaseAuthListener);
-        nAuth.signOut();
+
     }
 }
