@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@mipmap/broom"
     android:orientation="vertical"
-    tools:context=".DiaristaaCadastro">
+    tools:context=".DiaristaCadastro">
 
     <EditText
         android:id="@+id/txtnomeUser"

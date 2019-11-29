@@ -28,57 +28,22 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-    private String customerId = "", destination;
     Location mLastLocation;
     LocationRequest mLocationRequest;
-    private SupportMapFragment mapFragment;
-    private FusedLocationProviderClient mFusedLocationClient;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cliente_map);
-
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-            mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
-            mapFragment.getMapAsync(this);
-
-    }
-
-
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-
-            }else{
-                checkLocationPermission();
-            }
-        }
-    }
-    LocationCallback mLocationCallback = new LocationCallback(){
+    private GoogleMap mMap;
+    private String customerId = "", destination;
+    LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
-            for(Location location : locationResult.getLocations()){
-                if(getApplicationContext()!=null){
+            for (Location location : locationResult.getLocations()) {
+                if (getApplicationContext() != null) {
                     mLastLocation = location;
-                    LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
@@ -88,7 +53,7 @@ public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCa
                     GeoFire geoFireAvailable = new GeoFire(refAvailable);
                     GeoFire geoFireWorking = new GeoFire(refWorking);
 
-                    switch (customerId){
+                    switch (customerId) {
                         case "":
                             geoFireWorking.removeLocation(userId);
                             geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
@@ -103,10 +68,41 @@ public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCa
             }
         }
     };
+    private SupportMapFragment mapFragment;
+    private FusedLocationProviderClient mFusedLocationClient;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cliente_map);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+        mapFragment.getMapAsync(this);
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+                checkLocationPermission();
+            }
+        }
+    }
 
     private void checkLocationPermission() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 new AlertDialog.Builder(this)
                         .setTitle("give permission")
@@ -119,8 +115,7 @@ public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCa
                         })
                         .create()
                         .show();
-            }
-            else{
+            } else {
                 ActivityCompat.requestPermissions(ClienteMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
         }
@@ -129,14 +124,14 @@ public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch(requestCode){
-            case 1:{
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
                         mMap.setMyLocationEnabled(true);
                     }
-                } else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Please provide the permission", Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -148,20 +143,21 @@ public class ClienteMapActivity extends FragmentActivity implements OnMapReadyCa
     protected void onStop() {
         super.onStop();
 
-            disconnectDriver();
+        disconnectDriver();
     }
-    private void connectDriver(){
-        checkLocationPermission();
-        mFusedLocationClient.requestLocationUpdates(mLocationRequest,mLocationCallback, Looper.myLooper());
-        mMap.setMyLocationEnabled(true);
 
+    private void connectDriver() {
+        checkLocationPermission();
+        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+        mMap.setMyLocationEnabled(true);
     }
-    private void disconnectDriver(){
-        if (mFusedLocationClient != null){
+
+    private void disconnectDriver() {
+        if (mFusedLocationClient != null) {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         }
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-       DatabaseReference ref = FirebaseDatabase.getInstance().getReference("driversAvailable");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("driversAvailable");
 
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);

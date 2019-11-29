@@ -25,35 +25,34 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
-public class DiaristaaCadastro extends AppCompatActivity {
-
-
-
-
-    private FirebaseAuth nAuth;
-    private FirebaseAuth.AuthStateListener firebaseAuthListener;
-    Button buttonCadastrar,buttonChooseImg;
+public class ClienteCadastro extends AppCompatActivity {
+    public Uri imguri;
+    Button buttonCadastrar, buttonChooseImg;
     ImageView img;
     StorageReference mStorageRef;
-    public Uri imguri;
-    private StorageTask uploadTask;
     User user;
     DatabaseReference mDbRef;
-    EditText userName,userIdade,userCpf;
+    EditText userName, userIdade, userCpf;
+    private FirebaseAuth nAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    private StorageTask uploadTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cliente_cadastro);
+        String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("DiaristaAvatars");
-        mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Diaristas").child("CadastrosDiaristas");
-        buttonCadastrar = (Button) findViewById(R.id.cadastrarUser);
-        buttonChooseImg = (Button) findViewById(R.id.fotoGaleriaUser);
-        img = (ImageView) findViewById(R.id.imagemUser);
-        userName = (EditText) findViewById(R.id.txtnomeUser);
-        userIdade = (EditText) findViewById(R.id.txtidadeUser);
-        userCpf = (EditText) findViewById(R.id.txtcpfUser);
+        mStorageRef = FirebaseStorage.getInstance().getReference("ClientesAvatars");
+        mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentuser);
+
+        buttonCadastrar = findViewById(R.id.cadastrarUser);
+        buttonChooseImg = findViewById(R.id.fotoGaleriaUser);
+        img = findViewById(R.id.imagemUser);
+        userName = findViewById(R.id.txtnomeUser);
+        userIdade = findViewById(R.id.txtidadeUser);
+        userCpf = findViewById(R.id.txtcpfUser);
+
         user = new User();
 
 
@@ -66,52 +65,50 @@ public class DiaristaaCadastro extends AppCompatActivity {
         buttonCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (uploadTask != null && uploadTask.isInProgress()){
-                    Toast.makeText(DiaristaaCadastro.this,"File Being Uplodaded!",Toast.LENGTH_LONG).show();
+                if (uploadTask != null && uploadTask.isInProgress()) {
+                    Toast.makeText(ClienteCadastro.this, "File Being Uplodaded!", Toast.LENGTH_LONG).show();
 
-                }else{
+                } else {
                     Fileuploader();
                 }
             }
         });
     }
-    private String getExtension(Uri uri){
+
+    private String getExtension(Uri uri) {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
-
     }
 
     private void Fileuploader() {
         String imageId;
-        imageId = System.currentTimeMillis()+"."+getExtension(imguri);
-        user.setNome(userName.getText().toString().trim());
-         user.setImageId(imageId);
-        int p = Integer.parseInt(userIdade.getText().toString().trim());
-        user.setIdade(p);
+        imageId = System.currentTimeMillis() + "." + getExtension(imguri);
+        user.setNome(userName.getText().toString());
+        user.setImageId(imageId);
+        user.setIdade(Integer.parseInt(userIdade.getText().toString().trim()));
         user.setCpf(userCpf.getText().toString().trim());
-        mDbRef.push().setValue(user);
+        user.setDiarista(false);
+        mDbRef.setValue(user);
+        String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         StorageReference reference = mStorageRef.child(imageId);
 
         reference.putFile(imguri)
-
-
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        Toast.makeText(com.example.houseclean.DiaristaaCadastro.this,"Cadastro Realizado com Sucesso!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ClienteCadastro.this, "Cadastro Realizado com Sucesso!", Toast.LENGTH_LONG).show();
                         try {
                             Thread.sleep(2000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        Intent intent = new Intent(DiaristaaCadastro.this, MapsActivity.class);
+                        Intent intent = new Intent(ClienteCadastro.this, MapsActivity.class);
                         startActivity(intent);
                         finish();
                         return;
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -131,7 +128,6 @@ public class DiaristaaCadastro extends AppCompatActivity {
             intent.setAction(Intent.ACTION_GET_CONTENT);//
             startActivityForResult(intent, 1);
         } catch (Exception ex) {
-
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
@@ -139,11 +135,9 @@ public class DiaristaaCadastro extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData() != null){
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imguri = data.getData();
             img.setImageURI(imguri);
         }
     }
 }
-
-

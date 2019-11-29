@@ -1,8 +1,5 @@
 package com.example.houseclean;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,10 +7,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,99 +18,78 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PerfilUsuario extends AppCompatActivity {
+    EditText txtNome, txtEmail;
+    ImageView mUserimg;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
-    EditText txtNome, txtEmail;
-    ImageView mUserimg;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_perfil_usuario);
-        txtNome = (EditText) findViewById(R.id.txtnomeUser);
-        txtEmail = (EditText) findViewById(R.id.txtcpfUser);
-        mUserimg = (ImageView) findViewById(R.id.imagemUserFirebase);
+        txtNome = findViewById(R.id.txtnomeUser);
+        txtEmail = findViewById(R.id.txtcpfUser);
+        mUserimg = findViewById(R.id.imagemUserFirebase);
+        String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-
-        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference().child(mUser.getUid());
+        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference().child("Cliente").child(currentuser);
 
     }
 
+    public List<User> users = new ArrayList<>();
+    public void readDataFirebase(View view) {
+        final String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
+        mFirebaseDatabase.child("Cliente").addValueEventListener(new ValueEventListener() {
+            List<User> post = new ArrayList<>();
 
-       /* mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String username = dataSnapshot.child("nome").getValue().toString();
-                String cpf = dataSnapshot.child("cpf").getValue().toString();
-                Integer idade = (Integer) dataSnapshot.child("idade").getValue();
-
-                Toast.makeText(getApplicationContext(), username + "\n" + cpf + "\n" + idade, Toast.LENGTH_SHORT).show();
-
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    User user = ds.child(currentuser).getValue(User.class);
+                    post.add(user);
+                }
+                    users = post;
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PerfilUsuario.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        }*/;
-
-
-    public void readDataFirebase(View view) {
-
-        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    if (user.getPhotoUrl() != null) {
-                        Glide.with(PerfilUsuario.this).load(user.getPhotoUrl().toString()).into(mUserimg);
-                    }
-                    if (user.getDisplayName() != null) {
-                        String displayName = user.getDisplayName();
-                        txtNome.setText(displayName);
-                    }
-                }
-
-            }
-
-
-        };
+        });
+        String a = "";
     }
 
-        public void isLoggingOut (View view){
-            try {
-
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Toast.makeText(PerfilUsuario.this, "Logging out...", Toast.LENGTH_SHORT).show();
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(PerfilUsuario.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-
+    public void isLoggingOut(View view) {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        Toast.makeText(PerfilUsuario.this, "Logging out...", Toast.LENGTH_SHORT).show();
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(PerfilUsuario.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+        return;
+    }
 
-        @Override
-        protected void onStart () {
-            super.onStart();
-            if (mAuth.getCurrentUser() != null) {
-                Toast.makeText(PerfilUsuario.this, "Welcome " + mAuth.getCurrentUser().getDisplayName() + "!", Toast.LENGTH_LONG).show();
-            }
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mAuth.getCurrentUser() != null) {
+            Toast.makeText(PerfilUsuario.this, "Welcome " + mAuth.getCurrentUser().getDisplayName() + "!", Toast.LENGTH_LONG).show();
         }
-
-
+    }
 }
 
 

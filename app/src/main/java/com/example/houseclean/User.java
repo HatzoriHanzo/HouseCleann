@@ -6,6 +6,15 @@ public class User {
     private String imageId;
     private String cpf;
 
+    public boolean isDiarista() {
+        return diarista;
+    }
+
+    public void setDiarista(boolean diarista) {
+        this.diarista = diarista;
+    }
+
+    private boolean diarista;
 
     public User() {
     }

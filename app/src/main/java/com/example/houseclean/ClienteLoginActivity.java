@@ -1,8 +1,5 @@
 package com.example.houseclean;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,17 +7,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-
-    public class ClienteLoginActivity extends AppCompatActivity {
-    private Button buttonLogin,buttonRegistration;
+public class ClienteLoginActivity extends AppCompatActivity {
+    private Button buttonLogin, buttonRegistration;
     private EditText etxtEmail, etxtPassword;
     private FirebaseAuth nAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
@@ -31,35 +28,34 @@ import com.google.firebase.database.FirebaseDatabase;
         setContentView(R.layout.activity_cliente_login);
 
         nAuth = FirebaseAuth.getInstance();
-       firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user!=null){
-                    Toast.makeText(ClienteLoginActivity.this,"Welcome",Toast.LENGTH_LONG).show();
+                if (user != null) {
+                    Toast.makeText(ClienteLoginActivity.this, "Welcome", Toast.LENGTH_LONG).show();
                 }
             }
         };
 
-        etxtEmail = (EditText) findViewById(R.id.emailCliente);
-        etxtPassword = (EditText) findViewById(R.id.passwordCliente);
+        etxtEmail = findViewById(R.id.emailCliente);
+        etxtPassword = findViewById(R.id.passwordCliente);
 
-        buttonLogin = (Button) findViewById(R.id.loginCliente);
-        buttonRegistration = (Button) findViewById(R.id.registrationCliente);
+        buttonLogin = findViewById(R.id.loginCliente);
+        buttonRegistration = findViewById(R.id.registrationCliente);
 
         buttonRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String email = etxtEmail.getText().toString();
                 final String password = etxtPassword.getText().toString();
-                nAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(ClienteLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                nAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(ClienteLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()){
-                            Toast.makeText(ClienteLoginActivity.this,"Make sure your password is 6 digits long!",Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Intent intent = new Intent(ClienteLoginActivity.this, UserCadastro.class);
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(ClienteLoginActivity.this, "Make sure your password is 6 digits long!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent intent = new Intent(ClienteLoginActivity.this, ClienteCadastro.class);
                             startActivity(intent);
                             finish();
                             return;
@@ -74,12 +70,12 @@ import com.google.firebase.database.FirebaseDatabase;
             public void onClick(View view) {
                 final String email = etxtEmail.getText().toString();
                 final String password = etxtPassword.getText().toString();
-                nAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(ClienteLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                nAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(ClienteLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()){
-                            Toast.makeText(ClienteLoginActivity.this,"sign up error",Toast.LENGTH_SHORT).show();
-                        }else{
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(ClienteLoginActivity.this, "sign up error", Toast.LENGTH_SHORT).show();
+                        } else {
                             Intent intent = new Intent(ClienteLoginActivity.this, MapsActivity.class);
                             startActivity(intent);
                             finish();
